@@ -1,0 +1,7 @@
+def reverse_word(word):
+    reversed_word = word[::-1]
+    return reversed_word
+
+user_input = input("Input: ")
+reversed_input = reverse_word(user_input)
+print("Reversed:", reversed_input)
