@@ -1,0 +1,159 @@
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+class BinaryTree:
+    def __init__(self, root):
+        self.root = TreeNode(root)
+
+    def find_height(self, node):
+        if node is None:
+            return -1
+        left_height = self.find_height(node.left)
+        right_height = self.find_height(node.right)
+        return max(left_height, right_height) + 1
+
+    def pre_order_traversal(self, node):
+        if node:
+            print(node.value, end=" ")
+            self.pre_order_traversal(node.left)
+            self.pre_order_traversal(node.right)
+
+    def post_order_traversal(self, node):
+        if node:
+            self.post_order_traversal(node.left)
+            self.post_order_traversal(node.right)
+            print(node.value, end=" ")
+
+    def in_order_traversal(self, node):
+        if node:
+            self.in_order_traversal(node.left)
+            print(node.value, end=" ")
+            self.in_order_traversal(node.right)
+
+    def print_leaves(self, node):
+        if node:
+            if node.left is None and node.right is None:
+                print(node.value, end=" ")
+            self.print_leaves(node.left)
+            self.print_leaves(node.right)
+
+    def breadth_first_search(self):
+        if not self.root:
+            return []
+        result = []
+        queue = [self.root]
+        while queue:
+            node = queue.pop(0)
+            result.append(node.value)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        return result
+
+    def depth_first_search(self):
+        if not self.root:
+            return []
+        result = []
+        stack = [self.root]
+        while stack:
+            node = stack.pop()
+            result.append(node.value)
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+        return result
+
+    def sum_left_leaves(self, node):
+        if not node:
+            return 0
+        if node.left and not node.left.left and not node.left.right:
+            return node.left.value + self.sum_left_leaves(node.right)
+        return self.sum_left_leaves(node.left) + self.sum_left_leaves(node.right)
+
+    def sum_all_nodes(self, node):
+        if not node:
+            return 0
+        return node.value + self.sum_all_nodes(node.left) + self.sum_all_nodes(node.right)
+
+    def count_subtrees_with_sum(self, node, x):
+        if not node:
+            return 0
+        count = 0
+        if node.value == x:
+            count += 1
+        count += self.count_subtrees_with_sum(node.left, x - node.value)
+        count += self.count_subtrees_with_sum(node.right, x - node.value)
+        return count
+
+    def max_level_sum(self):
+        if not self.root:
+            return 0
+        max_sum = float("-inf")
+        queue = [self.root]
+        while queue:
+            level_sum = sum(node.value for node in queue)
+            max_sum = max(max_sum, level_sum)
+            next_level = []
+            for node in queue:
+                if node.left:
+                    next_level.append(node.left)
+                if node.right:
+                    next_level.append(node.right)
+            queue = next_level
+        return max_sum
+
+    def print_odd_level_nodes(self, node, level):
+        if not node:
+            return
+        if level % 2 != 0:
+            print(node.value, end=" ")
+        self.print_odd_level_nodes(node.left, level + 1)
+        self.print_odd_level_nodes(node.right, level + 1)
+
+# Example usage:
+tree = BinaryTree(1)
+tree.root.left = TreeNode(2)
+tree.root.right = TreeNode(3)
+tree.root.left.left = TreeNode(4)
+tree.root.left.right = TreeNode(5)
+tree.root.right.left = TreeNode(6)
+tree.root.right.right = TreeNode(7)
+
+print("Height of the tree:", tree.find_height(tree.root))
+print("Pre-order traversal:")
+tree.pre_order_traversal(tree.root)
+print("\nPost-order traversal:")
+tree.post_order_traversal(tree.root)
+print("\nIn-order traversal:")
+tree.in_order_traversal(tree.root)
+print("\nLeaves of the tree:")
+tree.print_leaves(tree.root)
+print("\nBreadth First Search:")
+print(tree.breadth_first_search())
+print("Depth First Search:")
+print(tree.depth_first_search())
+print("Sum of left leaves:", tree.sum_left_leaves(tree.root))
+print("Sum of all nodes:", tree.sum_all_nodes(tree.root))
+print("Count of subtrees with sum 12:", tree.count_subtrees_with_sum(tree.root, 12))
+print("Max level sum:", tree.max_level_sum())
+print("Nodes at odd levels:")
+tree.print_odd_level_nodes(tree.root, 1)
+This code defines a binary tree and includes methods for the operations you mentioned. You can create a BinaryTree object with your tree structure and then call the methods accordingly.
+
+
+
+
+Was this response better or worse?
+
+Better
+
+Worse
+
+Same
+
+
