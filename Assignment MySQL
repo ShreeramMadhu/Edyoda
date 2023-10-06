@@ -1,0 +1,18 @@
+SELECT COUNT(*) FROM SalesPeople WHERE LOWER(Sname) LIKE 'a%';
+SELECT S.Sname
+FROM SalesPeople S
+WHERE S.Snum IN (
+    SELECT O.Snum
+    FROM Orders O
+    GROUP BY O.Snum
+    HAVING SUM(O.Amt) > 2000
+);
+SELECT COUNT(*) FROM SalesPeople WHERE City = 'Newyork';
+SELECT City, COUNT(*) AS Count
+FROM SalesPeople
+WHERE City IN ('London', 'Paris')
+GROUP BY City;
+SELECT O.Snum, S.Sname, COUNT(O.Onum) AS NumOfOrders, GROUP_CONCAT(O.Odate ORDER BY O.Onum) AS OrderDates
+FROM SalesPeople S
+LEFT JOIN Orders O ON S.Snum = O.Snum
+GROUP BY S.Snum, S.Sname;
