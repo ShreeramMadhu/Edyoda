@@ -1,0 +1,195 @@
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def delete_zero_sum_sublists(head):
+    prefix_sum = 0
+    prefix_sum_map = {}
+    
+    dummy = ListNode(0)
+    dummy.next = head
+    current = dummy
+    
+    while current:
+        prefix_sum += current.val
+        if prefix_sum in prefix_sum_map:
+            # Remove elements from prefix_sum_map to the current node
+            prev = prefix_sum_map[prefix_sum].next
+            temp_sum = prefix_sum + prev.val
+            while temp_sum != prefix_sum:
+                del prefix_sum_map[temp_sum]
+                prev = prev.next
+                temp_sum += prev.val
+            prefix_sum_map[prefix_sum].next = current.next
+        else:
+            prefix_sum_map[prefix_sum] = current
+        current = current.next
+    
+    return dummy.next
+Reverse a linked list in groups of a given size:
+python
+Copy code
+def reverse_in_groups(head, k):
+    if not head:
+        return None
+
+    current, next_node, prev_tail = head, None, None
+    count = 0
+
+    # Count the number of nodes in the current group
+    while current and count < k:
+        next_node = current.next
+        current.next = prev_tail
+        prev_tail = current
+        current = next_node
+        count += 1
+
+    if next_node:
+        # Recursively reverse the next group and connect it to the current group
+        head.next = reverse_in_groups(next_node, k)
+
+    return prev_tail
+Merge a linked list into another linked list at alternate positions:
+python
+Copy code
+def merge_at_alternate_positions(head1, head2):
+    if not head1:
+        return head2
+    if not head2:
+        return head1
+
+    current1, current2 = head1, head2
+
+    while current1 and current2:
+        temp1, temp2 = current1.next, current2.next
+        current1.next = current2
+        current2.next = temp1
+        current1 = temp1
+        current2 = temp2
+
+    return head1
+In an array, count pairs with a given sum:
+python
+Copy code
+def count_pairs_with_sum(arr, target_sum):
+    count = 0
+    num_set = set()
+
+    for num in arr:
+        complement = target_sum - num
+        if complement in num_set:
+            count += 1
+        num_set.add(num)
+
+    return count
+Find duplicates in an array:
+python
+Copy code
+def find_duplicates(arr):
+    duplicates = []
+    num_set = set()
+
+    for num in arr:
+        if num in num_set:
+            duplicates.append(num)
+        else:
+            num_set.add(num)
+
+    return duplicates
+Find the Kth largest and Kth smallest numbers in an array:
+python
+Copy code
+def find_kth_largest(arr, k):
+    sorted_arr = sorted(arr, reverse=True)
+    return sorted_arr[k - 1]
+
+def find_kth_smallest(arr, k):
+    sorted_arr = sorted(arr)
+    return sorted_arr[k - 1]
+Move all the negative elements to one side of the array:
+python
+Copy code
+def move_negatives_to_one_side(arr):
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        if arr[left] < 0 and arr[right] < 0:
+            left += 1
+        elif arr[left] > 0 and arr[right] < 0:
+            arr[left], arr[right] = arr[right], arr[left]
+            left += 1
+            right -= 1
+        elif arr[left] > 0 and arr[right] > 0:
+            right -= 1
+        else:
+            left += 1
+            right -= 1
+    return arr
+Reverse a string using a stack data structure:
+python
+Copy code
+def reverse_string(input_string):
+    stack = []
+    for char in input_string:
+        stack.append(char)
+
+    reversed_string = ""
+    while stack:
+        reversed_string += stack.pop()
+
+    return reversed_string
+Evaluate a postfix expression using a stack:
+python
+Copy code
+def evaluate_postfix_expression(expression):
+    stack = []
+    operators = set(['+', '-', '*', '/'])
+
+    for char in expression:
+        if char.isdigit():
+            stack.append(int(char))
+        elif char in operators:
+            operand2 = stack.pop()
+            operand1 = stack.pop()
+            if char == '+':
+                stack.append(operand1 + operand2)
+            elif char == '-':
+                stack.append(operand1 - operand2)
+            elif char == '*':
+                stack.append(operand1 * operand2)
+            elif char == '/':
+                stack.append(operand1 // operand2)
+
+    return stack[0] if stack else None
+Implement a queue using the stack data structure:
+python
+Copy code
+class QueueUsingStack:
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+
+    def enqueue(self, item):
+        self.stack1.append(item)
+
+    def dequeue(self):
+        if not self.stack2:
+            if not self.stack1:
+                return None
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2.pop() if self.stack2 else None
+
+# Usage
+queue = QueueUsingStack()
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+print(queue.dequeue())  # Output: 1
+print(queue.dequeue())  # Output: 2
+You can use these functions in a Jupyter notebook or Python script as needed. If you have any specific questions or need further clarification on any of the solutions, please let me know.
+
+
+
+
