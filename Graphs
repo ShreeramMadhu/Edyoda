@@ -1,0 +1,136 @@
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+
+    def depth_first_traversal(self, node, visited):
+        visited.add(node)
+        print(node, end=' ')
+
+        for neighbor in self.graph[node]:
+            if neighbor not in visited:
+                self.depth_first_traversal(neighbor, visited)
+
+# Example usage:
+g = Graph()
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(1, 2)
+g.add_edge(2, 0)
+g.add_edge(2, 3)
+g.add_edge(3, 3)
+
+print("Depth First Traversal:")
+visited = set()
+g.depth_first_traversal(2, visited)
+Count the number of nodes at a given level in a tree using BFS:
+You can modify the BinaryTree class provided in the previous response to include a method to count nodes at a given level using BFS.
+
+Count the number of trees in a forest:
+The number of trees in a forest is equal to the number of connected components in an undirected graph. You can modify the Graph class from the Breadth First Traversal example to count the number of connected components using depth-first search or breadth-first search.
+
+Detect Cycle in a Directed Graph:
+Here's a Python implementation to detect a cycle in a directed graph using depth-first search (DFS):
+
+python
+Copy code
+class Graph:
+    def __init__(self, vertices):
+        self.graph = defaultdict(list)
+        self.V = vertices
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+
+    def is_cyclic_util(self, v, visited, rec_stack):
+        visited[v] = True
+        rec_stack[v] = True
+
+        for neighbor in self.graph[v]:
+            if not visited[neighbor]:
+                if self.is_cyclic_util(neighbor, visited, rec_stack):
+                    return True
+            elif rec_stack[neighbor]:
+                return True
+
+        rec_stack[v] = False
+        return False
+
+    def is_cyclic(self):
+        visited = [False] * self.V
+        rec_stack = [False] * self.V
+        for node in range(self.V):
+            if not visited[node]:
+                if self.is_cyclic_util(node, visited, rec_stack):
+                    return True
+        return False
+
+# Example usage:
+g = Graph(4)
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(1, 2)
+g.add_edge(2, 0)
+g.add_edge(2, 3)
+g.add_edge(3, 3)
+
+if g.is_cyclic():
+    print("Graph contains a cycle")
+else:
+    print("Graph doesn't contain a cycle")
+Implement n-Queen's Problem:
+The N-Queens problem is a classic combinatorial problem. Here's a Python implementation to solve it using a recursive backtracking approach:
+
+python
+Copy code
+def is_safe(board, row, col, n):
+    # Check for queens in the same column
+    for i in range(row):
+        if board[i][col] == 1:
+            return False
+
+    # Check for queens in the upper left diagonal
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check for queens in the upper right diagonal
+    for i, j in zip(range(row, -1, -1), range(col, n)):
+        if board[i][j] == 1:
+            return False
+
+    return True
+
+def solve_n_queens(n):
+    board = [[0 for _ in range(n)] for _ in range(n)]
+    solutions = []
+
+    def solve(row):
+        if row == n:
+            solutions.append(["".join(["Q" if cell == 1 else "." for cell in row]) for row in board])
+            return
+
+        for col in range(n):
+            if is_safe(board, row, col, n):
+                board[row][col] = 1
+                solve(row + 1)
+                board[row][col] = 0
+
+    solve(0)
+    return solutions
+
+# Example usage:
+n = 4
+solutions = solve_n_queens(n)
+for solution in solutions:
+    for row in solution:
+        print(row)
+    print()
+This code finds all solutions to the N-Queens problem for a given n. Each solution is represented as a list of strings, where "Q" represents a queen, and "." represents an empty cell on the chessboard.
+
+
+
+
+
